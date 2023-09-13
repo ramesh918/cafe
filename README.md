@@ -18,3 +18,9 @@ npx sequelize-cli db:seed --seed seeders/seed-employees.js
 
 ### postman collection
 https://api.postman.com/collections/10865552-63fa3a17-52f9-47b6-b1d9-c642165521ad?access_key=PMAT-01HA6X599EQ5HSTPJE3AHBZDP2
+
+### git commands use 
+git clone https://github.com/ramesh918/cafe.git
+git add .
+git commit -m "feat: completed the backend APIs for employee and cafe"
+git push --set-upstream origin development
