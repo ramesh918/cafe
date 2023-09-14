@@ -13,6 +13,7 @@ import FormControl from '@mui/material/FormControl'; // Import FormControl for s
 import InputLabel from '@mui/material/InputLabel'; // Import InputLabel for the cafe selection label
 import classes from '../cafe/Cafe.module.css';
 
+
 const Employee = () => {
   const dispatch = useDispatch();
   const cafes = useSelector((state) => state.cafe.cafes);
@@ -20,6 +21,7 @@ const Employee = () => {
   const { cafeId } = useParams(); // Get the cafeId from the route parameters
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [selectedCafe, setSelectedCafe] = useState(cafeId || ''); // Initialize with the cafeId from route parameters
+
 
   const fetchEmployees = async () => {
     try {
@@ -33,23 +35,28 @@ const Employee = () => {
     }
   };
 
+
   useEffect(() => {
     // Fetch employee data based on the selectedCafe
     fetchEmployees();
   }, [selectedCafe]);
 
+
   const openForm = () => {
     setIsFormOpen(true);
   };
+
 
   const closeForm = () => {
     setIsFormOpen(false);
   };
 
+
   const handleCafeChange = (event) => {
     const cafeId = event.target.value;
     setSelectedCafe(cafeId);
   };
+
 
   const handleDeleteEmployee = async (employeeId) => {
     try {
@@ -61,19 +68,21 @@ const Employee = () => {
     }
   };
 
+
   return (
     <Fragment>
       <div className={classes.header} style={{
         marginTop: "0.5%",
         marginLeft: "45%"
       }}>
-        
         <FormControl className={classes.select}>
-          <InputLabel>Select Cafe</InputLabel>
+        <InputLabel >Select Cafe</InputLabel>
           <Select
+           labelId="cafe-select-label"
             value={selectedCafe}
+            label="Select Cafe"
             onChange={handleCafeChange}
-            style={{width: "100px"}}
+            style={{width: "170px"}}
           >
             <MenuItem value="">All Cafes</MenuItem>
             {cafes.map((cafe) => (
@@ -83,7 +92,11 @@ const Employee = () => {
             ))}
           </Select>
         </FormControl>
-        <Button variant="contained" color="primary" onClick={openForm}>
+        <Button variant="contained" color="primary" onClick={openForm} style={{
+              marginLeft: "9px",
+              padding: "15px",
+              backgroundColor: "green"
+        }}>
           Add Employee
         </Button>
       </div>
@@ -101,4 +114,8 @@ const Employee = () => {
   );
 };
 
+
 export default Employee;
+
+
+

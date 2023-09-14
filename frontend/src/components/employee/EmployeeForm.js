@@ -10,6 +10,9 @@ import {
   FormControl,
 } from "@mui/material";
 import axios from "axios";
+import SuccessModal from './SuccessModal';
+import ErrorModal from './ErrorModal';
+
 
 function EmployeeForm({ onClose, fetchEmployees, cafes }) {
   const [employeeData, setEmployeeData] = useState({
@@ -20,14 +23,22 @@ function EmployeeForm({ onClose, fetchEmployees, cafes }) {
     cafeId: cafes.length > 0 ? cafes[0].id : "",
   });
 
+
   const [selectedCafe, setSelectedCafe] = useState(employeeData.cafeId);
   const [nameError, setNameError] = useState("");
   const [emailError, setEmailError] = useState("");
   const [phoneError, setPhoneError] = useState("");
+  const [successModalOpen, setSuccessModalOpen] = useState(false);
+  const [errorModalOpen, setErrorModalOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("no erro")
+
+
+
 
   useEffect(() => {
     setSelectedCafe(employeeData.cafeId);
   }, [employeeData.cafeId]);
+
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -35,6 +46,7 @@ function EmployeeForm({ onClose, fetchEmployees, cafes }) {
       ...employeeData,
       [name]: value,
     });
+
 
     // Reset validation errors
     if (name === "name") {
@@ -46,6 +58,7 @@ function EmployeeForm({ onClose, fetchEmployees, cafes }) {
     }
   };
 
+
   const handleCafeChange = (event) => {
     const id = event.target.value;
     setSelectedCafe(id);
@@ -55,16 +68,38 @@ function EmployeeForm({ onClose, fetchEmployees, cafes }) {
     }));
   };
 
+
+
+
+  const openSuccessModal = () => {
+    setSuccessModalOpen(true);
+  };
+ 
+
+
+ 
+  const openErrorModal = (msg) => {
+    setErrorModalOpen(true);
+    setErrorMessage(msg)
+  };
+ 
+
+
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+
     // Perform validation before submitting
     let isValid = true;
+
 
     if (employeeData.name.trim() === "") {
       setNameError("Name is required.");
       isValid = false;
     }
+
 
     if (
       !/^\d{8}$/.test(employeeData.phone_number) ||
@@ -74,6 +109,7 @@ function EmployeeForm({ onClose, fetchEmployees, cafes }) {
       isValid = false;
     }
 
+
     if (
       employeeData.email_address.trim() !== "" &&
       !/^\S+@\S+\.\S+$/.test(employeeData.email_address)
@@ -82,9 +118,11 @@ function EmployeeForm({ onClose, fetchEmployees, cafes }) {
       isValid = false;
     }
 
+
     if (!isValid) {
       return;
     }
+
 
     try {
       const data = JSON.stringify(employeeData);
@@ -98,15 +136,21 @@ function EmployeeForm({ onClose, fetchEmployees, cafes }) {
         data: data,
       };
 
+
       const response = await axios.request(config);
       console.log(JSON.stringify(response.data));
-      alert("Employee created successfully!");
+      openSuccessModal();
       fetchEmployees();
-      onClose();
+      // onClose();
     } catch (error) {
-      console.log(error);
+      if (error.response) {
+        // The request was made and the server responded with an error status code
+        const errorMessage = error.response.data.error; // Assuming the error message is in a "message" field // You can use this to display a quick error message
+        openErrorModal(errorMessage); // Pass the error message to the error modal
+      }
     }
   };
+
 
   return (
     <Box
@@ -125,14 +169,16 @@ function EmployeeForm({ onClose, fetchEmployees, cafes }) {
         }}
       >
         <Typography variant="h6" gutterBottom>
-          Add Employee
+          <b>Add Employee</b>
         </Typography>
         <TextField
           name="name"
           label="Name"
+          size="small"
+          margin="dense"
           variant="outlined"
           fullWidth
-          margin="normal"
+          
           value={employeeData.name}
           onChange={handleInputChange}
           required
@@ -143,7 +189,8 @@ function EmployeeForm({ onClose, fetchEmployees, cafes }) {
           name="email_address"
           label="Email Address"
           variant="outlined"
-          margin="normal"
+          margin="dense"
+          size="small"
           fullWidth
           value={employeeData.email_address}
           onChange={handleInputChange}
@@ -155,7 +202,8 @@ function EmployeeForm({ onClose, fetchEmployees, cafes }) {
           label="Phone Number"
           variant="outlined"
           fullWidth
-          margin="normal"
+          margin="dense"
+          size="small"
           value={employeeData.phone_number}
           onChange={handleInputChange}
           required
@@ -168,6 +216,8 @@ function EmployeeForm({ onClose, fetchEmployees, cafes }) {
             labelId="gender-select-label"
             label="Gender"
             name="gender"
+            size="small"
+            margin="dense"
             value={employeeData.gender}
             onChange={handleInputChange}
           >
@@ -181,6 +231,8 @@ function EmployeeForm({ onClose, fetchEmployees, cafes }) {
           labelId="cafe-select-label"
           label="Select Cafe"
           onChange={handleCafeChange}
+          size="small"
+          margin="dense"
           id="cafe-select"
           style={{ width: "170px" }}
           value={selectedCafe}
@@ -191,6 +243,7 @@ function EmployeeForm({ onClose, fetchEmployees, cafes }) {
             </MenuItem>
           ))}
         </Select>
+
 
         <div
           style={{
@@ -203,17 +256,25 @@ function EmployeeForm({ onClose, fetchEmployees, cafes }) {
             type="submit"
             variant="contained"
             color="primary"
-            style={{ marginRight: "5px" }}
+            style={{ marginRight: "5px", backgroundColor: "green" }}
           >
             Create Employee
           </Button>
-          <Button variant="contained" color="primary" onClick={onClose}>
+          <Button variant="contained" color="primary" onClick={onClose} style={{backgroundColor: "red" }}>
             Cancel
           </Button>
         </div>
       </form>
+
+
+      <SuccessModal isOpen={successModalOpen} onClose={() => setSuccessModalOpen(false)} message={`Employee created successfully!`}/>
+      <ErrorModal isOpen={errorModalOpen} onClose={() => setErrorModalOpen(false)} errorMessage={errorMessage}/>
     </Box>
   );
 }
 
+
 export default EmployeeForm;
+
+
+

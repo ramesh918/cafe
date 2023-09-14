@@ -20,23 +20,31 @@ import axios from "axios";
 import UpdateCafeForm from "./CafeUpdateForm";
 import Modal from "react-modal";
 import { Link } from "react-router-dom"; // Import Link from React Router
+import DeleteConfirmationModal from "./DeleteConfirmationModal"; // Import DeleteConfirmationModal
 
-const CafeList = ({ cafes, fetchCafes }) => {
+
+const CafeList = ({ cafes, fetchCafes, fetchCafeLocations }) => {
   const [isUpdateFormOpen, setUpdateFormOpen] = useState(false);
   const [selectedCafeData, setSelectedCafeData] = useState(null);
+  const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [deleteCafeId, setDeleteCafeId] = useState(null);
+
 
   const openUpdateForm = (cafe) => {
     setSelectedCafeData(cafe);
     setUpdateFormOpen(true);
   };
 
+
   const closeUpdateForm = () => {
     setSelectedCafeData(null);
     setUpdateFormOpen(false);
   };
 
+
   const handleEdit = (id) => {
     setUpdateFormOpen(true);
+
 
     const cafeToEdit = cafes.find((cafe) => cafe.id === id);
     if (cafeToEdit) {
@@ -44,20 +52,36 @@ const CafeList = ({ cafes, fetchCafes }) => {
     }
   };
 
-  const handleDelete = async (id) => {
+
+  const openDeleteModal = (id) => {
+    setDeleteCafeId(id);
+    setDeleteModalOpen(true);
+  };
+
+
+  const closeDeleteModal = () => {
+    setDeleteCafeId(null);
+    setDeleteModalOpen(false);
+  };
+
+
+  const handleDelete = async () => {
     try {
       let config = {
         method: "delete",
-        url: `http://localhost:3333/cafes/${id}`,
+        url: `http://localhost:3333/cafes/${deleteCafeId}`,
         headers: {},
       };
       const response = await axios.request(config);
       console.log(JSON.stringify(response.data));
       fetchCafes();
+      fetchCafeLocations();
+      closeDeleteModal(); // Close the delete confirmation modal after deletion
     } catch (error) {
       console.error(error);
     }
   };
+
 
   return (
     <Fragment>
@@ -94,7 +118,6 @@ const CafeList = ({ cafes, fetchCafes }) => {
                   {cafe.description}
                 </TableCell>
                 <TableCell className={classes.tableCell}>
-                  {/* Wrap EmployeeCount in a Link */}
                   <Link to={`/employees/${cafe.id}`}>
                     <Button variant="contained" color="primary">
                       {cafe.employeeCount}
@@ -113,7 +136,7 @@ const CafeList = ({ cafes, fetchCafes }) => {
                   </IconButton>
                   <IconButton
                     color="secondary"
-                    onClick={() => handleDelete(cafe.id)}
+                    onClick={() => openDeleteModal(cafe.id)}
                   >
                     <DeleteIcon />
                   </IconButton>
@@ -140,8 +163,17 @@ const CafeList = ({ cafes, fetchCafes }) => {
           />
         )}
       </Modal>
+      <DeleteConfirmationModal
+        isOpen={isDeleteModalOpen}
+        onCancel={closeDeleteModal}
+        onConfirmDelete={handleDelete}
+      />
     </Fragment>
   );
 };
 
+
 export default CafeList;
+
+
+

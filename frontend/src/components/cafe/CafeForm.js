@@ -2,13 +2,18 @@ import React, { useState } from "react";
 import { TextField, Button, Box, Typography } from "@mui/material";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import axios from "axios";
-function CafeForm({ onClose, fetchCafes }) {
+import SuccessModal from "../employee/SuccessModal";
+function CafeForm({ onClose, fetchCafes, fetchCafeLocations }) {
   const [cafeData, setCafeData] = useState({
     name: "",
     description: "",
     location: "",
     logo: "logo", // Store the image URL here
   });
+
+
+  const [successModalOpen, setSuccessModalOpen] = useState(false);
+
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -18,14 +23,17 @@ function CafeForm({ onClose, fetchCafes }) {
     });
   };
 
+
   const handleImageUpload = async (e) => {
     const file = e.target.files[0];
     if (file) {
       // Replace this with your API endpoint for uploading the image
       const apiUrl = "http://localhost:3333/logo/upload";
 
+
       const formData = new FormData();
       formData.append("logo", file);
+
 
       try {
         const response = await fetch(apiUrl, {
@@ -43,12 +51,19 @@ function CafeForm({ onClose, fetchCafes }) {
     }
   };
 
+
+  const openSuccessModal = () => {
+    setSuccessModalOpen(true);
+  };
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     // Here you can submit cafeData to your backend or perform any required actions
     console.log("Cafe Data:", cafeData);
     try {
       const data = JSON.stringify(cafeData);
+
 
       const config = {
         method: "post",
@@ -60,15 +75,19 @@ function CafeForm({ onClose, fetchCafes }) {
         data: data,
       };
 
+
       const response = await axios.request(config);
       console.log(JSON.stringify(response.data));
-      alert("Cafe created successfully!");
+      // alert("Cafe created successfully!");
+      openSuccessModal();
       fetchCafes()
-      onClose();
+      fetchCafeLocations()
+      // onClose();
     } catch (error) {
       console.log(error);
     }
   };
+
 
   return (
     <Box
@@ -87,14 +106,15 @@ function CafeForm({ onClose, fetchCafes }) {
         }}
       >
         <Typography variant="h6" gutterBottom>
-          Add Cafe
+         <b>Add Cafe</b> 
         </Typography>
         <TextField
           name="name"
           label="Name"
           variant="outlined"
           fullWidth
-          margin="normal"
+          margin="dense"
+          size="small"
           value={cafeData.name}
           onChange={handleInputChange}
           required
@@ -103,8 +123,9 @@ function CafeForm({ onClose, fetchCafes }) {
           name="description"
           label="Description"
           variant="outlined"
-          margin="normal"
+          margin="dense"
           fullWidth
+          size="small"
           value={cafeData.description}
           onChange={handleInputChange}
           required
@@ -114,7 +135,8 @@ function CafeForm({ onClose, fetchCafes }) {
           label="Location"
           variant="outlined"
           fullWidth
-          margin="normal"
+          margin="dense"
+          size="small"
           value={cafeData.location}
           onChange={handleInputChange}
           required
@@ -153,17 +175,22 @@ function CafeForm({ onClose, fetchCafes }) {
             type="submit"
             variant="contained"
             color="primary"
-            style={{ marginRight: "5px" }}
+            style={{ marginRight: "5px", backgroundColor:"green" }}
           >
             Create Cafe
           </Button>
-          <Button variant="contained" color="primary" onClick={onClose}>
+          <Button variant="contained" color="primary" onClick={onClose} style={{  backgroundColor:"red" }}>
             Cancel
           </Button>
         </div>
       </form>
+      <SuccessModal isOpen={successModalOpen} onClose={() => setSuccessModalOpen(false)} message={`Cafe created successfully!`}/>
     </Box>
   );
 }
 
+
 export default CafeForm;
+
+
+

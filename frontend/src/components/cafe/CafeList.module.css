@@ -1,33 +1,42 @@
 /* CafeList.module.css */
 
+
 /* Style for the table container */
 .tableContainer {
-    max-width: 100%;
-    margin-top: 16px;
-    overflow-x: auto;
-  }
-  
-  /* Style for the table */
-  .table {
-    min-width: 650px;
-  }
-  
-  /* Style for the table header */
-  .tableHeader {
-    background-color: #2b9ee2; /* Your header background color */
-    color: #FFFFFF; /* Your header text color */
-    font-weight: bold;
-    position: sticky;
-    top: 0;
-  }
-  
-  /* Style for the table rows */
-  .tableRow {
-    height: 40px;
-  }
-  
-  /* Style for the table cells */
-  .tableCell {
-    padding: 8px;
-  }
-  
+  max-width: 100%;
+  margin-top: 16px;
+  overflow-x: auto;
+}
+
+
+
+
+/* Style for the table */
+.table {
+  min-width: 650px;
+}
+
+
+/* Style for the table header */
+.tableHeader {
+  background-color: #2b9ee2; /* Your header background color */
+  color: #ffffff; /* Your header text color */
+  font-weight: bold;
+  position: sticky;
+  top: 0;
+}
+
+
+/* Style for the table rows */
+.tableRow {
+  height: 40px;
+}
+
+
+/* Style for the table cells */
+.tableCell {
+  padding: 8px;
+}
+
+
+

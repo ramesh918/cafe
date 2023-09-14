@@ -90,14 +90,15 @@ function UpdateCafeForm({ cafeData, onUpdate, onClose }) {
         }}
       >
         <Typography variant="h6" gutterBottom>
-          Update Cafe
+         <b>Update Cafe</b> 
         </Typography>
         <TextField
           name="name"
           label="Name"
           variant="outlined"
           fullWidth
-          margin="normal"
+          margin="dense"
+          size="small"
           value={updatedCafeData.name}
           onChange={handleInputChange}
           required
@@ -106,7 +107,8 @@ function UpdateCafeForm({ cafeData, onUpdate, onClose }) {
           name="description"
           label="Description"
           variant="outlined"
-          margin="normal"
+          margin="dense"
+          size="small"
           fullWidth
           value={updatedCafeData.description}
           onChange={handleInputChange}
@@ -117,7 +119,8 @@ function UpdateCafeForm({ cafeData, onUpdate, onClose }) {
           label="Location"
           variant="outlined"
           fullWidth
-          margin="normal"
+          margin="dense"
+          size="small"
           value={updatedCafeData.location}
           onChange={handleInputChange}
           required
@@ -156,11 +159,11 @@ function UpdateCafeForm({ cafeData, onUpdate, onClose }) {
             type="submit"
             variant="contained"
             color="primary"
-            style={{ marginRight: "5px" }}
+            style={{ marginRight: "5px", backgroundColor: "green" }}
           >
             Update Cafe
           </Button>
-          <Button variant="contained" color="primary" onClick={onClose}>
+          <Button variant="contained" color="primary" onClick={onClose} style={{  backgroundColor: "red" }}>
             Cancel
           </Button>
         </div>

@@ -12,6 +12,7 @@ import classes from './Cafe.module.css';
 import { useSelector, useDispatch } from 'react-redux';
 import { cafeActions } from '../../store/cafe';
 
+
 function Cafe() {
   const dispatch = useDispatch();
   const cafes = useSelector((state) => state.cafe.cafes);
@@ -19,13 +20,16 @@ function Cafe() {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [selectedLocation, setSelectedLocation] = useState('');
 
+
   const fetchCafes = async () => {
     // Define the API endpoint from where you want to fetch data
     const apiUrl = 'http://localhost:3333/cafes';
 
+
     try {
       const response = await fetch(apiUrl);
       const data = await response.json();
+
 
       // Update the state with the fetched data
       dispatch(cafeActions.getCafes({ cafes: data }));
@@ -39,9 +43,11 @@ function Cafe() {
     // Define the API endpoint from where you want to fetch data
     const apiUrl = 'http://localhost:3333/cafes/locations';
 
+
     try {
       const response = await fetch(apiUrl);
       const data = await response.json();
+
 
       // Update the state with the fetched data
       dispatch(cafeActions.getLocations({ locations: data }));
@@ -50,23 +56,28 @@ function Cafe() {
     }
   };
 
+
   useEffect(() => {
     fetchCafes();
-    fetchCafeLocations()
+    fetchCafeLocations();
   }, []);
+
 
   const openForm = () => {
     setIsFormOpen(true);
   };
 
+
   const closeForm = () => {
     setIsFormOpen(false);
   };
 
-  const handleLocationChange = async(event) => {
+
+  const handleLocationChange = async (event) => {
     setSelectedLocation(event.target.value);
-    const location = event.target.value
+    const location = event.target.value;
     const apiUrl = `http://localhost:3333/cafes?location=${location}`;
+
 
     try {
       const response = await fetch(apiUrl);
@@ -76,23 +87,29 @@ function Cafe() {
     } catch (error) {
       console.error('Error fetching data:', error);
     }
-   
   };
-
 
 
   return (
     <div>
-      <Box display="flex" justifyContent="flex-end" alignItems="center">
-      <FormControl variant="outlined" className={classes.locationSelect}>
-          <InputLabel >Select Location</InputLabel>
+      <Box
+        display="flex"
+        justifyContent="space-between" // Center horizontally and add space between items
+        alignItems="center"
+        mb={2} // Add margin to create space between the container and the content below
+      >
+        <FormControl variant="outlined" className={classes.locationSelect} style={{
+              marginLeft: "40%",
+              marginTop: "0.5%"
+        }}>
+          <InputLabel>Select Location</InputLabel>
           <Select
             labelId="location-select-label"
             label="Select Location"
             value={selectedLocation}
             onChange={handleLocationChange}
-            id = "location-select"
-            style={{width: "170px"}}
+            id="location-select"
+            style={{ width: "170px" }}
           >
             <MenuItem value="">All Locations</MenuItem>
             {locations.map((location) => (
@@ -102,10 +119,16 @@ function Cafe() {
             ))}
           </Select>
         </FormControl>
-        <Button variant="contained" color="primary" onClick={openForm}>
+        <Button variant="contained" color="primary" onClick={openForm} style={{
+              marginRight: "40%",
+              marginTop: "0.5%",
+              padding: "15px",
+              backgroundColor: "green"
+        }}>
           Add Cafe
         </Button>
       </Box>
+
 
       <Modal
         isOpen={isFormOpen}
@@ -114,11 +137,12 @@ function Cafe() {
         contentLabel="Add Cafe"
         className={classes.modalContent}
       >
-        <CafeForm onClose={closeForm} fetchCafes={fetchCafes} />
+        <CafeForm onClose={closeForm} fetchCafes={fetchCafes} fetchCafeLocations={fetchCafeLocations} />
       </Modal>
-      <CafeList cafes={cafes} fetchCafes={fetchCafes} />
+      <CafeList cafes={cafes} fetchCafes={fetchCafes} fetchCafeLocations={fetchCafeLocations} />
     </div>
   );
 }
+
 
 export default Cafe;

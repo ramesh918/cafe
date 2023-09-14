@@ -15,7 +15,8 @@ import classes from '../cafe/CafeList.module.css';
 import Modal from 'react-modal';
 import modelClasses from '../cafe/Cafe.module.css';
 import UpdateEmployeeForm from './UpdateEmployeeForm';
-import DeleteConfirmationModal from './DeleteConfirmationModal'; 
+import DeleteConfirmationModal from './DeleteConfirmationModal';
+
 
 const EmployeeList = ({ employees, onDelete, fetchEmployees, cafes }) => {
   const [isUpdateFormOpen, setUpdateFormOpen] = useState(false);
@@ -23,18 +24,22 @@ const EmployeeList = ({ employees, onDelete, fetchEmployees, cafes }) => {
   const [isDeleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false); // State for delete confirmation modal
   const [employeeToDelete, setEmployeeToDelete] = useState(null); // Employee to be deleted
 
+
   const openUpdateForm = (employee) => {
     setSelectedEmployeeData(employee);
     setUpdateFormOpen(true);
   };
+
 
   const closeUpdateForm = () => {
     setSelectedEmployeeData(null);
     setUpdateFormOpen(false);
   };
 
+
   const handleEdit = (id) => {
     setUpdateFormOpen(true);
+
 
     const employeeEdit = employees.find((employee) => employee.id === id);
     if (employeeEdit) {
@@ -42,27 +47,31 @@ const EmployeeList = ({ employees, onDelete, fetchEmployees, cafes }) => {
     }
   };
 
+
   const showDeleteConfirmation = (employee) => {
     setEmployeeToDelete(employee);
     setDeleteConfirmationOpen(true);
   };
+
 
   const cancelDeleteConfirmation = () => {
     setEmployeeToDelete(null);
     setDeleteConfirmationOpen(false);
   };
 
+
   const confirmDeleteEmployee = () => {
     onDelete(employeeToDelete.id);
     setDeleteConfirmationOpen(false);
   };
+
 
   return (
     <Fragment>
       <TableContainer
         component={Paper}
         className={classes.tableContainer}
-        style={{ maxHeight: '400px', overflowY: 'auto' }}
+        style={{ maxHeight: '800px', overflowY: 'auto' }}
       >
         <Table className={classes.table}>
           <TableHead className={classes.tableHeader}>
@@ -108,6 +117,7 @@ const EmployeeList = ({ employees, onDelete, fetchEmployees, cafes }) => {
         </Table>
       </TableContainer>
 
+
       <Modal
         isOpen={isUpdateFormOpen}
         onRequestClose={closeUpdateForm}
@@ -125,6 +135,7 @@ const EmployeeList = ({ employees, onDelete, fetchEmployees, cafes }) => {
         )}
       </Modal>
 
+
       <DeleteConfirmationModal
         isOpen={isDeleteConfirmationOpen}
         onCancel={cancelDeleteConfirmation}
@@ -134,4 +145,8 @@ const EmployeeList = ({ employees, onDelete, fetchEmployees, cafes }) => {
   );
 };
 
+
 export default EmployeeList;
+
+
+

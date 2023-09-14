@@ -122,14 +122,15 @@ function UpdateEmployeeForm({ onClose, fetchEmployees, employee, cafes }) {
         }}
       >
         <Typography variant="h6" gutterBottom>
-          Update Employee
+          <b>Update Employee</b>
         </Typography>
         <TextField
           name="name"
           label="Name"
           variant="outlined"
           fullWidth
-          margin="normal"
+          margin="dense"
+          size="small"
           value={employeeData.name}
           onChange={handleInputChange}
           required
@@ -140,7 +141,8 @@ function UpdateEmployeeForm({ onClose, fetchEmployees, employee, cafes }) {
           name="email_address"
           label="Email Address"
           variant="outlined"
-          margin="normal"
+          margin="dense"
+          size="small"
           fullWidth
           value={employeeData.email_address}
           onChange={handleInputChange}
@@ -152,7 +154,8 @@ function UpdateEmployeeForm({ onClose, fetchEmployees, employee, cafes }) {
           label="Phone Number"
           variant="outlined"
           fullWidth
-          margin="normal"
+          size="small"
+          margin="dense"
           value={employeeData.phone_number}
           onChange={handleInputChange}
           required
@@ -165,6 +168,8 @@ function UpdateEmployeeForm({ onClose, fetchEmployees, employee, cafes }) {
             labelId="gender-select-label"
             label="Gender"
             name="gender"
+            margin="dense"
+           size="small"
             value={employeeData.gender}
             onChange={handleInputChange}
           >
@@ -177,6 +182,8 @@ function UpdateEmployeeForm({ onClose, fetchEmployees, employee, cafes }) {
         <Select
           labelId="cafe-select-label"
           label="Select Cafe"
+          margin="dense"
+          size="small"
           onChange={handleInputChange}
           id="cafe-select"
           style={{ width: "170px" }}
@@ -200,11 +207,11 @@ function UpdateEmployeeForm({ onClose, fetchEmployees, employee, cafes }) {
             type="submit"
             variant="contained"
             color="primary"
-            style={{ marginRight: "5px" }}
+            style={{ marginRight: "5px", backgroundColor: "green" }}
           >
             Update Employee
           </Button>
-          <Button variant="contained" color="primary" onClick={onClose}>
+          <Button variant="contained" color="primary" onClick={onClose} style={{backgroundColor:"red"}}>
             Cancel
           </Button>
         </div>
