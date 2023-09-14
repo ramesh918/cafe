@@ -17,7 +17,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 // Create a new café
 router.post("/upload", upload.single("logo"), (req, res) => {
-  res.send({fileName: req.file.filename});
+  res.send({imageUrl: "http://localhost:3333/logo/get/"+req.file.filename});
 });
 
 // Retrieve all cafés

@@ -6,7 +6,7 @@ employee management in cafe
 2. MySQL(8.1.0)
 3. Sequelize ORM
 
-### commands used
+### commands used for backend
 npm init
 npm install sequelize mysql2 express cors joi uuid
 npx sequelize-cli init
@@ -24,3 +24,10 @@ git clone https://github.com/ramesh918/cafe.git
 git add .
 git commit -m "feat: completed the backend APIs for employee and cafe"
 git push --set-upstream origin development
+
+
+### commands used for backend
+npx create-react-app frontend
+npm install @material-ui/core
+npm install @mui/icons-material
+npm install @mui/material

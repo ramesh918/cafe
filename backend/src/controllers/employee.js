@@ -103,7 +103,7 @@ async function getEmployeesByCafe(req, res) {
 
     // If a café is provided, add it to the WHERE clause
     if (cafe) {
-      whereClause = { '$Cafe.name$': cafe };
+      whereClause = { '$Cafe.id$': cafe };
     }
 
     // Calculate the number of days worked using Sequelize literal
@@ -117,6 +117,7 @@ async function getEmployeesByCafe(req, res) {
         'id',
         'name',
         'email_address',
+        'gender',
         'phone_number',
         [sequelize.literal('DATEDIFF(NOW(), Employee.createdAt)'), 'days_worked'],
         [sequelize.col('Cafe.name'), 'cafe'],
