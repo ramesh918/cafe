@@ -269,6 +269,7 @@ function EmployeeForm({ onClose, fetchEmployees, cafes }) {
 
       <SuccessModal isOpen={successModalOpen} onClose={() => setSuccessModalOpen(false)} message={`Employee created successfully!`}/>
       <ErrorModal isOpen={errorModalOpen} onClose={() => setErrorModalOpen(false)} errorMessage={errorMessage}/>
+   
     </Box>
   );
 }

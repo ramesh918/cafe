@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 import { TextField, Button, Box, Typography } from "@mui/material";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import axios from "axios";
-
+import SuccessModal from "../employee/SuccessModal";
 function UpdateCafeForm({ cafeData, onUpdate, onClose }) {
   const [updatedCafeData, setUpdatedCafeData] = useState(cafeData);
-
+  const [successModalOpen, setSuccessModalOpen] = useState(false);
   useEffect(() => {
     // Reset the form data when cafeData changes (e.g., when editing a different cafe)
     setUpdatedCafeData(cafeData);
@@ -44,6 +44,11 @@ function UpdateCafeForm({ cafeData, onUpdate, onClose }) {
     }
   };
 
+  
+  const openSuccessModal = () => {
+    setSuccessModalOpen(true);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     // Here you can submit updatedCafeData to your backend or perform any required actions
@@ -65,9 +70,10 @@ function UpdateCafeForm({ cafeData, onUpdate, onClose }) {
 
       const response = await axios.request(config);
       console.log(JSON.stringify(response.data));
-      alert("Cafe updated successfully!");
+      // alert("Cafe updated successfully!");
+      openSuccessModal()
       onUpdate(updatedCafeData); // Notify the parent component about the update
-      onClose();
+      // onClose();
     } catch (error) {
       console.log(error);
     }
@@ -168,6 +174,7 @@ function UpdateCafeForm({ cafeData, onUpdate, onClose }) {
           </Button>
         </div>
       </form>
+      <SuccessModal isOpen={successModalOpen} onClose={() => setSuccessModalOpen(false)} message={`Cafe updated successfully!`}/>
     </Box>
   );
 }

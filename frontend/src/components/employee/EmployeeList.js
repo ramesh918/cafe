@@ -18,7 +18,7 @@ import UpdateEmployeeForm from './UpdateEmployeeForm';
 import DeleteConfirmationModal from './DeleteConfirmationModal';
 
 
-const EmployeeList = ({ employees, onDelete, fetchEmployees, cafes }) => {
+const EmployeeList = ({ employees, onDelete, fetchEmployees, cafes, fetchCafes }) => {
   const [isUpdateFormOpen, setUpdateFormOpen] = useState(false);
   const [selectedEmployeeData, setSelectedEmployeeData] = useState(null);
   const [isDeleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false); // State for delete confirmation modal
@@ -131,6 +131,7 @@ const EmployeeList = ({ employees, onDelete, fetchEmployees, cafes }) => {
             employee={selectedEmployeeData}
             onClose={closeUpdateForm}
             fetchEmployees={fetchEmployees}
+            fetchCafes = {fetchCafes}
           />
         )}
       </Modal>
