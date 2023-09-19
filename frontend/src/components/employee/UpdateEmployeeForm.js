@@ -7,12 +7,13 @@ import {
   InputLabel,
   Select,
   MenuItem,
-  FormControl,
-  FormHelperText,
+  FormControl
 } from "@mui/material";
 import axios from "axios";
+import SuccessModal from './SuccessModal';
+import ErrorModal from './ErrorModal';
 
-function UpdateEmployeeForm({ onClose, fetchEmployees, employee, cafes }) {
+function UpdateEmployeeForm({ onClose, fetchEmployees, employee, cafes, fetchCafes }) {
   const [employeeData, setEmployeeData] = useState({
     name: employee.name || "",
     email_address: employee.email_address || "",
@@ -25,13 +26,19 @@ function UpdateEmployeeForm({ onClose, fetchEmployees, employee, cafes }) {
   const [emailError, setEmailError] = useState("");
   const [phoneError, setPhoneError] = useState("");
 
+  const [successModalOpen, setSuccessModalOpen] = useState(false);
+  const [errorModalOpen, setErrorModalOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("no erro")
+
   useEffect(() => {
+    const matchingCafe = cafes.find(cafe => cafe.name === employee.cafe);
+    const cafeId = matchingCafe ? matchingCafe.id : "";
     setEmployeeData({
       name: employee.name || "",
       email_address: employee.email_address || "",
       phone_number: employee.phone_number || "",
       gender: employee.gender || "Male",
-      cafeId: employee.cafeId || (cafes.length > 0 ? cafes[0].id : ""),
+      cafeId: cafeId
     });
   }, [employee, cafes]);
 
@@ -51,6 +58,17 @@ function UpdateEmployeeForm({ onClose, fetchEmployees, employee, cafes }) {
       setPhoneError("");
     }
   };
+
+  const openSuccessModal = () => {
+    setSuccessModalOpen(true);
+  };
+ 
+
+  const openErrorModal = (msg) => {
+    setErrorModalOpen(true);
+    setErrorMessage(msg)
+  };
+ 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -97,9 +115,10 @@ function UpdateEmployeeForm({ onClose, fetchEmployees, employee, cafes }) {
 
       const response = await axios.request(config);
       console.log(JSON.stringify(response.data));
-      alert("Employee updated successfully!");
+      openSuccessModal();
       fetchEmployees();
-      onClose();
+      fetchCafes()
+      // onClose();
     } catch (error) {
       console.log(error);
     }
@@ -184,6 +203,7 @@ function UpdateEmployeeForm({ onClose, fetchEmployees, employee, cafes }) {
           label="Select Cafe"
           margin="dense"
           size="small"
+          name="cafeId"
           onChange={handleInputChange}
           id="cafe-select"
           style={{ width: "170px" }}
@@ -216,6 +236,9 @@ function UpdateEmployeeForm({ onClose, fetchEmployees, employee, cafes }) {
           </Button>
         </div>
       </form>
+      <SuccessModal isOpen={successModalOpen} onClose={() => setSuccessModalOpen(false)} message={`Employee updated successfully!`}/>
+      <ErrorModal isOpen={errorModalOpen} onClose={() => setErrorModalOpen(false)} errorMessage={errorMessage}/>
+   
     </Box>
   );
 }

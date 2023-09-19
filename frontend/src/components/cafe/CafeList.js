@@ -158,8 +158,10 @@ const CafeList = ({ cafes, fetchCafes, fetchCafeLocations }) => {
             cafeData={selectedCafeData}
             onUpdate={() => {
               fetchCafes();
+              fetchCafeLocations();
             }}
             onClose={closeUpdateForm}
+          
           />
         )}
       </Modal>

@@ -12,7 +12,7 @@ import Select from '@mui/material/Select'; // Import Select for the cafe selecti
 import FormControl from '@mui/material/FormControl'; // Import FormControl for styling
 import InputLabel from '@mui/material/InputLabel'; // Import InputLabel for the cafe selection label
 import classes from '../cafe/Cafe.module.css';
-
+import { cafeActions } from '../../store/cafe';
 
 const Employee = () => {
   const dispatch = useDispatch();
@@ -22,6 +22,22 @@ const Employee = () => {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [selectedCafe, setSelectedCafe] = useState(cafeId || ''); // Initialize with the cafeId from route parameters
 
+  const fetchCafes = async () => {
+    // Define the API endpoint from where you want to fetch data
+    const apiUrl = 'http://localhost:3333/cafes';
+
+
+    try {
+      const response = await fetch(apiUrl);
+      const data = await response.json();
+
+
+      // Update the state with the fetched data
+      dispatch(cafeActions.getCafes({ cafes: data }));
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
 
   const fetchEmployees = async () => {
     try {
@@ -39,6 +55,7 @@ const Employee = () => {
   useEffect(() => {
     // Fetch employee data based on the selectedCafe
     fetchEmployees();
+    fetchCafes()
   }, [selectedCafe]);
 
 
@@ -109,7 +126,7 @@ const Employee = () => {
       >
         <EmployeeForm onClose={closeForm} fetchEmployees={fetchEmployees} cafes={cafes} />
       </Modal>
-      <EmployeeList employees={employees} onDelete={handleDeleteEmployee} fetchEmployees={fetchEmployees} cafes={cafes} />
+      <EmployeeList employees={employees} onDelete={handleDeleteEmployee} fetchEmployees={fetchEmployees} cafes={cafes} fetchCafes={fetchCafes} />
     </Fragment>
   );
 };
